@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: white;
+        }
+
+        .game {
+            width: 90%;
+            max-width: 420px;
+            padding: 30px;
+            text-align: center;
+            background: #1f2937;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        h1 { margin-top: 0; font-size: 28px; }
+        p { color: #d1d5db; }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover { background: #1d4ed8; }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #attempts { margin-top: 10px; }
+    </style>
+</head>
+
+<body>
+<div class="game">
+    <h1>🎯 Number Guessing Game</h1>
+    <p>I'm thinking of a number from <b>1 to 100</b>.</p>
+    <p>Try to guess it!</p>
+
+    <input
+        type="number"
+        id="guess"
+        min="1"
+        max="100"
+        placeholder="Enter your guess"
+    >
+
+    <button onclick="checkGuess()">Guess</button>
+
+    <p id="message"></p>
+    <p id="attempts"></p>
+
+    <button onclick="newGame()">New Game</button>
+</div>
+
+<script>
+    let secretNumber;
+    let attempts;
+
+    function newGame() {
+        secretNumber = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+
+        document.getElementById("message").textContent = "";
+        document.getElementById("attempts").textContent = "";
+        document.getElementById("guess").value = "";
+        document.getElementById("guess").disabled = false;
+    }
+
+    function checkGuess() {
+        const guessInput = document.getElementById("guess");
+        const message = document.getElementById("message");
+        const attemptsText = document.getElementById("attempts");
+        const guess = Number(guessInput.value);
+
+        if (!guess || guess < 1 || guess > 100) {
+            message.textContent = "⚠️ Enter a number between 1 and 100.";
+            return;
+        }
+
+        attempts++;
+
+        if (guess > secretNumber) {
+            message.textContent = "🔼 Too high! Try again.";
+        } else if (guess < secretNumber) {
+            message.textContent = "🔽 Too low! Try again.";
+        } else {
+            message.textContent = "🎉 Correct!";
+            attemptsText.textContent =
+                "You guessed the number in " + attempts + " attempts!";
+            guessInput.disabled = true;
+        }
+    }
+
+    newGame();
+</script>
+</body>
+</html>
